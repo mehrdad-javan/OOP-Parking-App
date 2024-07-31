@@ -1,24 +1,32 @@
 package se.lexicon;
 
 
-import se.lexicon.model.*;
+import se.lexicon.dao.VehicleDaoImpl;
+import se.lexicon.model.Customer;
+import se.lexicon.model.Vehicle;
+import se.lexicon.model.VehicleType;
+
+import java.util.Optional;
 
 public class App {
     public static void main(String[] args) {
 
-        ParkingSpot parkingSpot1 = new ParkingSpot(1, false, 47001);
-        Customer customer1 = new Customer(1, "Customer Name", "123456789");
-        System.out.println(parkingSpot1);
-        System.out.println(customer1);
-        Vehicle vehicle1 = new Vehicle("abc123", VehicleType.ELECTRIC, customer1);
-        System.out.println(vehicle1);
+        Customer customer1 = new Customer(1, "John", "Doe");
 
-        Reservation reservation1 = new Reservation(2, vehicle1, parkingSpot1);
-        reservation1.create();
-        System.out.println(customer1);
-        System.out.println(parkingSpot1);
-        System.out.println(reservation1);
+        Vehicle vehicle1 = new Vehicle("ABC123", VehicleType.CAR, customer1);
+        Vehicle vehicle2 = new Vehicle("DEF456", VehicleType.MOTORCYCLE, customer1);
 
+
+        VehicleDaoImpl vehicleDao = new VehicleDaoImpl();
+        vehicleDao.create(vehicle1);
+        vehicleDao.create(vehicle2);
+
+        Optional<Vehicle> optionalVehicle = vehicleDao.find("ABC123", 1);
+        if (optionalVehicle.isPresent()) {
+            System.out.println("Vehicle found: " + optionalVehicle.get());
+        } else {
+            System.out.println("Vehicle not found.");
+        }
 
 
     }
